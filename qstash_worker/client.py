@@ -91,5 +91,13 @@ class TaskClient:
         return message_ids
 
 
-# Global singleton client
-default_client = TaskClient()
+# Global singleton client (lazy)
+_default_client: Optional[TaskClient] = None
+
+
+def get_default_client() -> TaskClient:
+    """Get or create global client instance."""
+    global _default_client
+    if _default_client is None:
+        _default_client = TaskClient()
+    return _default_client

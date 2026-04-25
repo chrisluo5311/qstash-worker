@@ -2,7 +2,7 @@
 
 import os
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, Optional
 
 from dotenv import load_dotenv
 
@@ -48,5 +48,12 @@ def get_config() -> QStashConfig:
     return _config
 
 
-# Backwards-compatible module-level access
-config = get_config()
+# Lazy module-level access
+class _LazyConfig:
+    """Lazy proxy for global config."""
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(get_config(), name)
+
+
+config = _LazyConfig()

@@ -253,12 +253,13 @@ class TestDecorators:
     """Test convenience decorators."""
 
     def test_task_decorator(self):
-        from qstash_worker.decorators import default_worker
+        from qstash_worker.decorators import get_default_worker
 
         @task("decorated_task")
         def handle_decorated(payload):
             return {"received": payload}
 
-        assert "decorated_task" in default_worker.handlers
-        result = default_worker.handlers["decorated_task"]({"key": "value"})
+        worker = get_default_worker()
+        assert "decorated_task" in worker.handlers
+        result = worker.handlers["decorated_task"]({"key": "value"})
         assert result == {"received": {"key": "value"}}
