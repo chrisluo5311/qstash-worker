@@ -49,6 +49,7 @@ async def handle_deploy(payload: dict) -> dict:
     service = payload.get("service", "app")
     # Simulate async work
     import asyncio
+
     await asyncio.sleep(1)
     return {"status": "deployed", "service": service}
 

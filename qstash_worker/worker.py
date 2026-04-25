@@ -1,6 +1,6 @@
 """Consumer worker with FastAPI for receiving QStash tasks."""
 
-import asyncio
+import inspect
 import time
 import traceback
 from typing import Any, Callable, Dict, Optional
@@ -76,7 +76,7 @@ class TaskWorker:
             # Execute task
             start = time.time()
             try:
-                if asyncio.iscoroutinefunction(handler):
+                if inspect.iscoroutinefunction(handler):
                     result = await handler(task.payload)
                 else:
                     result = handler(task.payload)

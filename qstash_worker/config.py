@@ -1,7 +1,7 @@
 """Auto-load configuration from environment variables."""
 
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from dotenv import load_dotenv
 
@@ -25,9 +25,7 @@ class QStashConfig:
         self.current_signing_key = self.current_signing_key or os.getenv(
             "QSTASH_CURRENT_SIGNING_KEY", ""
         )
-        self.next_signing_key = self.next_signing_key or os.getenv(
-            "QSTASH_NEXT_SIGNING_KEY", ""
-        )
+        self.next_signing_key = self.next_signing_key or os.getenv("QSTASH_NEXT_SIGNING_KEY", "")
         self.callback_url = self.callback_url or os.getenv("QSTASH_CALLBACK_URL", "")
 
         if not self.token:
@@ -36,5 +34,17 @@ class QStashConfig:
             )
 
 
-# Global singleton config
-config = QStashConfig()
+# Global singleton config (lazy initialization)
+_config: QStashConfig | None = None
+
+
+def get_config() -> QStashConfig:
+    """Get or create global config instance."""
+    global _config
+    if _config is None:
+        _config = QStashConfig()
+    return _config
+
+
+# Backwards-compatible module-level access
+config = get_config()

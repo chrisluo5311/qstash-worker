@@ -172,10 +172,13 @@ class TestTaskWorker:
             return {"sum": payload["a"] + payload["b"]}
 
         client = TestClient(worker.app)
-        response = client.post("/tasks", json={
-            "task_type": "add",
-            "payload": {"a": 2, "b": 3},
-        })
+        response = client.post(
+            "/tasks",
+            json={
+                "task_type": "add",
+                "payload": {"a": 2, "b": 3},
+            },
+        )
 
         assert response.status_code == 200
         data = response.json()
@@ -191,14 +194,18 @@ class TestTaskWorker:
         @worker.register("async_task")
         async def handle_async(payload):
             import asyncio
+
             await asyncio.sleep(0.01)
             return {"done": True}
 
         client = TestClient(worker.app)
-        response = client.post("/tasks", json={
-            "task_type": "async_task",
-            "payload": {},
-        })
+        response = client.post(
+            "/tasks",
+            json={
+                "task_type": "async_task",
+                "payload": {},
+            },
+        )
 
         assert response.status_code == 200
         data = response.json()
@@ -208,10 +215,13 @@ class TestTaskWorker:
     def test_task_endpoint_unknown_type(self):
         worker = TaskWorker(verify_signature=False)
         client = TestClient(worker.app)
-        response = client.post("/tasks", json={
-            "task_type": "unknown",
-            "payload": {},
-        })
+        response = client.post(
+            "/tasks",
+            json={
+                "task_type": "unknown",
+                "payload": {},
+            },
+        )
 
         assert response.status_code == 404
 
@@ -223,10 +233,13 @@ class TestTaskWorker:
             raise ValueError("intentional error")
 
         client = TestClient(worker.app)
-        response = client.post("/tasks", json={
-            "task_type": "fail",
-            "payload": {},
-        })
+        response = client.post(
+            "/tasks",
+            json={
+                "task_type": "fail",
+                "payload": {},
+            },
+        )
 
         assert response.status_code == 500
         data = response.json()
