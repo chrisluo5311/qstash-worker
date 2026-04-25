@@ -32,10 +32,14 @@ class TaskWorker:
         self._receiver: Optional[Receiver] = None
 
         if verify_signature:
-            self._receiver = Receiver(
-                current_signing_key=config.current_signing_key,
-                next_signing_key=config.next_signing_key,
-            )
+            try:
+                self._receiver = Receiver(
+                    current_signing_key=config.current_signing_key,
+                    next_signing_key=config.next_signing_key,
+                )
+            except ValueError:
+                # Missing signing keys, disable verification
+                self._verify_signature = False
 
         self._setup_routes()
 
