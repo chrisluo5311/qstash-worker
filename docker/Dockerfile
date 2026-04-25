@@ -12,7 +12,7 @@ COPY pyproject.toml ./
 COPY qstash_worker/ ./qstash_worker/
 
 # Install the package
-RUN pip install --no-cache-dir -e ".[dev]"
+RUN pip install --no-cache-dir "."
 
 # Copy application code
 COPY examples/worker.py ./worker.py
