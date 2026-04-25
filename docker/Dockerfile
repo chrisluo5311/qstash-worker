@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy dependency definitions first (for layer caching)
-COPY pyproject.toml ./
+COPY pyproject.toml README.md ./
 COPY qstash_worker/ ./qstash_worker/
 
 # Install the package
