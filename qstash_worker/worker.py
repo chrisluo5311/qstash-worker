@@ -51,7 +51,7 @@ class TaskWorker:
                 signature = request.headers.get("Upstash-Signature", "")
                 try:
                     self._receiver.verify(
-                        body=body_bytes,
+                        body=body_bytes.decode("utf-8"),
                         signature=signature,
                         url=str(request.url),
                     )

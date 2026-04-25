@@ -2,6 +2,7 @@
 
 import os
 from dataclasses import dataclass
+from typing import Optional
 
 from dotenv import load_dotenv
 
@@ -35,7 +36,7 @@ class QStashConfig:
 
 
 # Global singleton config (lazy initialization)
-_config: QStashConfig | None = None
+_config: Optional[QStashConfig] = None
 
 
 def get_config() -> QStashConfig:
@@ -43,6 +44,7 @@ def get_config() -> QStashConfig:
     global _config
     if _config is None:
         _config = QStashConfig()
+    assert _config is not None
     return _config
 
 

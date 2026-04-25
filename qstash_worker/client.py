@@ -71,6 +71,8 @@ class TaskClient:
             kwargs["flow_control"] = flow_control
 
         res = self.client.message.publish_json(**kwargs)
+        if isinstance(res, list):
+            return res[0].message_id
         return res.message_id
 
     def batch_send(self, tasks: list[dict[str, Any]]) -> list[str]:

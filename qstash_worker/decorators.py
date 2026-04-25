@@ -1,12 +1,14 @@
 """Convenience decorators for task registration."""
 
+from typing import Callable
+
 from .worker import TaskWorker
 
 # Global default worker instance
 default_worker = TaskWorker()
 
 
-def task(task_type: str):
+def task(task_type: str) -> Callable:
     """Decorator to register a task handler on the default worker.
 
     Usage:
